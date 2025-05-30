@@ -18,4 +18,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
         List<Airport> findByCityIgnoreCase(String city);
         List<Airport> findByCountryIgnoreCase(String country);
         
+        Airport findByIataCode(String iataCode);
 }
