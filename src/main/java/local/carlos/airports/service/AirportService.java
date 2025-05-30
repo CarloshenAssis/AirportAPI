@@ -5,6 +5,7 @@
 package local.carlos.airports.service;
 
 import java.util.List;
+import local.carlos.airports.DTO.AirportMinDTO;
 import local.carlos.airports.entities.Airport;
 import local.carlos.airports.repositories.AirportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,18 @@ public class AirportService {
             List<Airport> result = airportRepository.findByCityIgnoreCase(city);
             return result;
        }
+      
+      /**
+       * Retorna DTO AirportsMinDTO filtrado por country (pais).
+       * @param country
+       * @return
+       */
+      public List<AirportMinDTO> findByCountry(String country) {
+            List<Airport> resultAirport = airportRepository.findByCountryIgnoreCase(country);
+
+            List<AirportMinDTO> resultDTO = resultAirport.stream() 
+                    .map(x -> new AirportMinDTO(x)).toList();
+
+            return resultDTO;
+      }
 }
