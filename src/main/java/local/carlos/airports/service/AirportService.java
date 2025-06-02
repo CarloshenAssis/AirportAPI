@@ -5,8 +5,11 @@
 package local.carlos.airports.service;
 
 import java.util.List;
+import static java.util.stream.Collectors.toList;
 import local.carlos.airports.DTO.AirportMinDTO;
+import local.carlos.airports.DTO.AirportNearMeDTO;
 import local.carlos.airports.entities.Airport;
+import local.carlos.airports.projections.AirportNearMeProjection;
 import local.carlos.airports.repositories.AirportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ public class AirportService {
     
         @Autowired
         private AirportRepository airportRepository;
+    public List<AirportNearMeDTO> findNear;
         
         public List<Airport> findAll() {
             
@@ -62,5 +66,19 @@ public class AirportService {
             return result;
         }
       
+  /**
+   * Retorna DTO Airport NearMe
+   * @param latitude
+   * @param longitude
+   * @return
+   */
+    
+    public List<AirportNearMeDTO> findNearMe(double latitude, double longitude) {
+          List<AirportNearMeProjection> resultNearAirports = airportRepository.findNearMe(latitude, longitude);
 
+            List<AirportNearMeDTO> resultDTO = resultNearAirports.stream()
+                .map(x -> new AirportNearMeDTO(x)).toList();
+                
+        return resultDTO;
+}
 }

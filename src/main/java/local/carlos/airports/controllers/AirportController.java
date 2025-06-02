@@ -6,12 +6,14 @@ package local.carlos.airports.controllers;
 
 import java.util.List;
 import local.carlos.airports.DTO.AirportMinDTO;
+import local.carlos.airports.DTO.AirportNearMeDTO;
 import local.carlos.airports.entities.Airport;
 import local.carlos.airports.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -92,6 +94,31 @@ return ResponseEntity.ok (result);
                 return ResponseEntity.ok(result);
 }
     }
-}
+       /* Endpoint /airports/nearme
+        * Retorna os aeroportos próximos a coodenada enviada como parâmetro * da requisição GET.
+        *
+        *@param latitude
+        *@param longitude
+        * @return
+        */
+        
+    @GetMapping("/nearme")
+        public ResponseEntity<List<AirportNearMeDTO>> findNearMe(
+                @RequestParam double latitude,
+                @RequestParam double longitude ) {
+            
+            List<AirportNearMeDTO> result = airportService.findNearMe(latitude, longitude);
 
+            if (result.isEmpty()) {
+            // Ops.. lista vazia...
+            // not Found devolve 404
+            
+            return ResponseEntity.notFound().build();
+            } else {
+            // Eba! Tem dados!
+            // ok devolve 200
+                return ResponseEntity.ok (result); 
+            }
+        }
+}
 
